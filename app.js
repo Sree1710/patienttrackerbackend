@@ -6,7 +6,6 @@ const Express = require("express")
 
 const { patientModel } = require("./patientModel")
 const { patientModel2 } = require("./patientModel2")
-const { adminModel } = require("./adminModel")
 const { bookModel } = require("./bookModel")
 
 const app = Express()
@@ -37,7 +36,7 @@ app.post("/dlogin", async(req, res) => {
                 res.send({ "success": true, data: data });
 
             } else {
-                res.send({ "success": "Invalid password!" });
+                res.send({ "success": "Invalid username or password!" });
             }
         } else {
             res.send({ "success": "No User Found!" });
@@ -45,6 +44,20 @@ app.post("/dlogin", async(req, res) => {
     })
 })
 
+app.post("/plogin", async(req,res) => {
+    const request=req.body
+    patientModel2.findOne({ patientUsername: request.patientUsername }, (err, dataa) => {
+        if(dataa) {
+            if(dataa.patientPassword == request.patientPassword) {
+                res.send({ "success": true, dataa: dataa});
+            } else{
+                res.send({ "success":"Invalid username or password!" });
+            }
+        } else {
+            res.send({ "success": "No User Found!" });
+        }
+    })
+})
 
 app.post("/pr", async(req, res) => {
     const data2 = req.body
@@ -59,22 +72,6 @@ app.post("/pr", async(req, res) => {
         })
 
 })
-
-app.post("/adminreg", async(req, res) => {
-    const data5 = req.body
-    const ob = new adminModel(data5)
-    ob.save(
-        (error, data5) => {
-            if (error) {
-                res.send("error occured")
-            } else {
-                res.send(data5)
-            }
-        })
-
-})
-
-
 
 app.post("/bp", async(req, res) => {
     const data4 = req.body
