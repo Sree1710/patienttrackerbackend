@@ -1,5 +1,5 @@
 const Mongoose=require("mongoose")
-const patientModel=Mongoose.model("patients",Mongoose.Schema({
+const patientModel=Mongoose.model("doctors",Mongoose.Schema({
   doctorName:String,
   doctorDepartment:String,
   doctorUsername:String,
